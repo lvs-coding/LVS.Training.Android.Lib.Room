@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.trainingroom.data.CountryDataRepository;
+import com.example.trainingroom.data.CountryRepository;
 import com.example.trainingroom.data.local.AppDatabase;
 import com.example.trainingroom.data.model.Country;
 
@@ -15,6 +17,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private CountryRepository repo;
 
 
 
@@ -25,13 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        repo = new CountryDataRepository(AppDatabase.getAppDatabase(this));
+
+
     }
 
     @OnClick(R.id.btn_save_data)
     public void btnSave_onClick(View view) {
-        DatabaseInitializer.populateAsync(AppDatabase.getAppDatabase(this));
-        List<Country> countries = DatabaseInitializer.getAll(AppDatabase.getAppDatabase(this));
-
+//        DatabaseInitializer.populateAsync(AppDatabase.getAppDatabase(this));
+//        List<Country> countries = DatabaseInitializer.getAll(AppDatabase.getAppDatabase(this));
+        List<Country> countries = repo.getAll();
         for (Country c:countries) {
             Log.d(TAG,c.getName());
 
